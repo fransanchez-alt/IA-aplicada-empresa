@@ -1,0 +1,1077 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>UD3 · Conocer la empresa</title>
+<meta name="description" content="Unidad 3 de IA aplicada a la empresa: conocer la empresa y especificar (reto Hidrotex).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Fira+Sans+Extra+Condensed:wght@500;700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --bg:#F6F2EB; --surface:#FFFDF9; --ink:#1A1A1A; --muted:#55504A; --line:#E2D9CA;
+  --orange:#FF7A00; --orange-soft:#FFE9D3; --teal:#247C7C; --teal-soft:#DCEEEC;
+  --code-bg:#1A1A1A; --code-ink:#F4EFE6; --warn-bg:#FFF1E2; --ok:#2F7D4F;
+  --display:'Archivo Black', 'Arial Black', Arial, sans-serif;
+  --body:'Source Sans 3', 'Segoe UI', Arial, sans-serif;
+  --label:'Fira Sans Extra Condensed', 'Arial Narrow', Arial, sans-serif;
+  --mono:'JetBrains Mono', 'Courier New', monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#15130F; --surface:#1F1C18; --ink:#F2ECE2; --muted:#B9B0A3; --line:#3A342C;
+    --orange:#FF8A1F; --orange-soft:#3A2715; --teal:#5FB8B3; --teal-soft:#16302E;
+    --code-bg:#0C0B09; --code-ink:#F4EFE6; --warn-bg:#2E2114; --ok:#6CC08F;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#15130F; --surface:#1F1C18; --ink:#F2ECE2; --muted:#B9B0A3; --line:#3A342C;
+  --orange:#FF8A1F; --orange-soft:#3A2715; --teal:#5FB8B3; --teal-soft:#16302E;
+  --code-bg:#0C0B09; --code-ink:#F4EFE6; --warn-bg:#2E2114; --ok:#6CC08F;
+}
+*{box-sizing:border-box}
+body{background:var(--bg); color:var(--ink); font:17px/1.55 var(--body); padding-inline:16px; padding-block:0 64px}
+.wrap{max-width:1120px; margin:0 auto}
+header.top{padding-block:40px 32px; border-bottom:3px solid var(--ink); display:grid; gap:12px}
+.eyebrow{font:700 15px/1 var(--label); letter-spacing:.14em; text-transform:uppercase; color:var(--teal)}
+h1{font:400 clamp(34px,6vw,60px)/1.02 var(--display); margin:0; text-wrap:balance}
+h1 .zero{color:var(--orange)}
+.lede{font-size:19px; color:var(--muted); max-width:62ch; margin:0}
+.goals{display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; padding:0; list-style:none}
+.goals li{font:600 15px/1 var(--body); background:var(--surface); border:1px solid var(--line); padding:9px 12px; border-radius:999px}
+.layout{display:grid; grid-template-columns:240px 1fr; gap:48px; margin-top:40px}
+nav.steps{position:sticky; top:calc(env(safe-area-inset-top,0px) + 24px); align-self:start; display:grid; gap:4px}
+nav.steps .progress{font:700 14px/1 var(--label); letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:12px}
+.bar{height:6px; background:var(--line); border-radius:3px; overflow:hidden; margin-top:8px}
+.bar span{display:block; height:100%; width:0; background:var(--orange); transition:width .3s}
+nav.steps a{display:flex; gap:10px; align-items:center; padding:8px 10px; border-radius:8px; color:var(--ink); text-decoration:none; font-weight:600; font-size:15px}
+nav.steps a:hover,nav.steps a:focus-visible{background:var(--surface); outline:none}
+nav.steps a .n{flex:none; width:26px; height:26px; border-radius:50%; border:2px solid var(--ink); display:grid; place-items:center; font:700 13px/1 var(--label)}
+nav.steps a.done .n{background:var(--teal); border-color:var(--teal); color:var(--surface)}
+main{display:grid; gap:56px; min-width:0}
+section.step{display:grid; gap:16px; scroll-margin-top:24px}
+.step-head{display:flex; gap:16px; align-items:flex-start}
+.step-num{flex:none; font:400 44px/1 var(--display); color:var(--orange); width:52px}
+.step-head h2{font:400 clamp(24px,3.4vw,32px)/1.12 var(--display); margin:4px 0 6px; text-wrap:balance}
+.step-head .time{font:700 14px/1 var(--label); letter-spacing:.08em; text-transform:uppercase; color:var(--muted)}
+.body{display:grid; gap:14px; padding-left:68px; max-width:760px}
+.body p{margin:0}
+ol.do{margin:0; padding-left:22px; display:grid; gap:10px}
+ol.do li::marker{font-weight:700; color:var(--teal)}
+kbd,.ui{font:600 14px/1 var(--mono); background:var(--surface); border:1px solid var(--line); border-bottom-width:2px; padding:3px 6px; border-radius:5px; white-space:nowrap}
+.ui{font-family:var(--body); font-size:15px}
+.cmd{position:relative; background:var(--code-bg); color:var(--code-ink); border-radius:10px; overflow-x:auto}
+.cmd pre{margin:0; padding:16px 96px 16px 18px; font:14px/1.6 var(--mono); white-space:pre}
+.cmd pre .c{color:#9C9489}
+.cmd.long pre{max-height:460px; overflow:auto}
+.copy{position:absolute; top:10px; right:10px; font:700 13px/1 var(--label); letter-spacing:.06em; text-transform:uppercase; background:var(--orange); color:#1A1A1A; border:0; border-radius:6px; padding:8px 10px; cursor:pointer}
+.copy:focus-visible{outline:3px solid var(--teal); outline-offset:2px}
+.note{border-left:4px solid var(--teal); background:var(--teal-soft); padding:12px 16px; border-radius:0 8px 8px 0}
+.warn{border-left:4px solid var(--orange); background:var(--warn-bg); padding:12px 16px; border-radius:0 8px 8px 0}
+.note b,.warn b{font-family:var(--label); letter-spacing:.06em; text-transform:uppercase; font-size:14px; display:block; margin-bottom:2px}
+details{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:12px 16px}
+details summary{cursor:pointer; font-weight:700}
+details[open] summary{margin-bottom:10px}
+.check{display:flex; gap:10px; align-items:center; font-weight:700; width:max-content; max-width:100%; background:var(--surface); border:2px solid var(--ink); border-radius:999px; padding:8px 16px 8px 12px; cursor:pointer; user-select:none}
+.check input{width:20px; height:20px; accent-color:var(--teal)}
+.check:has(input:checked){border-color:var(--teal); color:var(--teal)}
+/* diagrama del arnés */
+.harness{background:var(--surface); border:2px solid var(--ink); border-radius:14px; padding:20px; display:grid; gap:14px}
+.harness .tag{font:700 14px/1 var(--label); letter-spacing:.1em; text-transform:uppercase; color:var(--muted)}
+.harness-grid{display:grid; grid-template-columns:1fr 1.1fr 1fr; grid-template-rows:auto auto; gap:12px; align-items:stretch}
+.piece{border:1px dashed var(--teal); border-radius:10px; padding:12px; display:grid; gap:4px}
+.piece h4{margin:0; font:700 17px/1.2 var(--body); color:var(--teal)}
+.piece p{font-size:15px; color:var(--muted); margin:0}
+.piece code{font:600 13px/1.4 var(--mono); color:var(--ink)}
+.brain{grid-row:span 2; grid-column:2; background:var(--ink); color:var(--bg); border-radius:12px; padding:18px; display:grid; align-content:center; justify-items:center; text-align:center; gap:6px}
+.brain .big{font:400 26px/1 var(--display); color:var(--orange)}
+.brain p{margin:0; font-size:15px; color:var(--bg); opacity:.85}
+.experiment{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+.experiment > div{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:14px; display:grid; gap:6px}
+.experiment h4{margin:0; font:700 14px/1 var(--label); letter-spacing:.1em; text-transform:uppercase; color:var(--muted)}
+.experiment p{margin:0; font-size:15px}
+table.roles{border-collapse:collapse; width:100%; font-size:15px}
+.table-wrap{overflow-x:auto}
+table.roles th,table.roles td{text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top}
+table.roles th{font:700 13px/1 var(--label); letter-spacing:.1em; text-transform:uppercase; color:var(--muted)}
+footer{margin-top:64px; padding-top:20px; border-top:1px solid var(--line); color:var(--muted); font-size:14px}
+a{color:var(--teal)}
+@media (max-width:820px){
+  .layout{grid-template-columns:1fr; gap:24px}
+  nav.steps{position:static; grid-auto-flow:column; grid-auto-columns:max-content; overflow-x:auto; padding-bottom:6px}
+  nav.steps .progress{grid-column:1/-1; display:none}
+  nav.steps a .t{display:none}
+  .body{padding-left:0}
+  .harness-grid{grid-template-columns:1fr 1fr}
+  .brain{grid-column:1/-1; grid-row:auto; order:-1}
+  .experiment{grid-template-columns:1fr}
+}
+/* pestañas */
+.tabbar{display:flex; gap:8px; flex-wrap:wrap; padding-block:20px 0}
+.tab{font:700 15px/1 var(--label); letter-spacing:.08em; text-transform:uppercase; background:transparent; color:var(--muted); border:2px solid var(--line); border-radius:999px; padding:10px 16px; cursor:pointer}
+.tab[aria-selected="true"]{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+.tab:focus-visible{outline:3px solid var(--teal); outline-offset:2px}
+.email{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:20px; display:grid; gap:10px; font-size:16px}
+.email .meta{font:600 14px/1.5 var(--mono); color:var(--muted); border-bottom:1px solid var(--line); padding-bottom:10px}
+.email p{margin:0}
+.facts{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px}
+.facts div{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:12px 14px}
+.facts b{display:block; font:700 13px/1.2 var(--label); letter-spacing:.1em; text-transform:uppercase; color:var(--teal); margin-bottom:4px}
+table.canvas{border-collapse:collapse; width:100%; font-size:15px; min-width:560px}
+table.canvas th,table.canvas td{text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top}
+table.canvas th{font:700 13px/1 var(--label); letter-spacing:.1em; text-transform:uppercase; color:var(--muted)}
+table.canvas td:first-child{font-weight:700; white-space:nowrap; font-variant-numeric:tabular-nums}
+table.canvas tr.yours td{background:var(--orange-soft)}
+@media (prefers-reduced-motion:reduce){ .bar span{transition:none} }
+</style>
+
+<style>
+.sitebar{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; padding:14px 0; border-bottom:1px solid var(--line); font:700 14px/1 var(--label); letter-spacing:.08em; text-transform:uppercase}
+.sitebar a{color:var(--ink); text-decoration:none}
+.sitebar a:hover{color:var(--orange)}
+.sitebar .brand{display:flex; align-items:center; gap:8px}
+.sitebar .brand i{display:inline-block; width:12px; height:12px; background:var(--orange); border-radius:2px}
+.sitebar nav{display:flex; gap:14px; flex-wrap:wrap}
+.sitebar nav a[aria-current="page"]{color:var(--orange)}
+.dl{display:flex; flex-wrap:wrap; gap:10px; margin-top:6px}
+.dl a{display:inline-flex; align-items:center; gap:8px; background:var(--ink); color:var(--bg); text-decoration:none; font:700 15px/1 var(--label); letter-spacing:.06em; text-transform:uppercase; padding:12px 16px; border-radius:999px}
+.dl a.alt{background:transparent; color:var(--ink); border:2px solid var(--ink)}
+.dl a:focus-visible{outline:3px solid var(--teal); outline-offset:2px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="sitebar">
+    <a class="brand" href="index.html"><i></i>IA aplicada a la empresa</a>
+    <nav aria-label="Unidades">
+      <a href="index.html">Portada</a>
+      <a href="ud1.html">UD1</a>
+      <a href="ud2.html">UD2</a>
+      <a href="ud3.html" aria-current="page">UD3</a>
+    </nav>
+  </div>
+  <div class="tabbar" role="tablist" aria-label="Sesiones">
+    <button class="tab" role="tab" id="tab-ud3" aria-controls="ud3" data-panel="ud3">UD3 · Dónde estamos</button>
+    <button class="tab" role="tab" id="tab-sesion0" aria-controls="sesion0" data-panel="sesion0">Sesión 0 · lunes 28</button>
+    <button class="tab" role="tab" id="tab-martes" aria-controls="martes" data-panel="martes">Sesión 1 · martes 29</button>
+    <button class="tab" role="tab" id="tab-viernes" aria-controls="viernes" data-panel="viernes">Sesión 2 · viernes 2</button>
+    <button class="tab" role="tab" id="tab-kit" aria-controls="kit" data-panel="kit">Kit de requisitos</button>
+  </div>
+  <div class="panel" id="ud3" role="tabpanel" aria-labelledby="tab-ud3">
+  <header class="top">
+    <span class="eyebrow">IA aplicada a la empresa · 2.º DAM · Unidad 3</span>
+    <h1>UD3 · <span class="zero">Conocer</span> la empresa y especificar</h1>
+    <p class="lede">En esta unidad aprendéis a hacer lo que el agente no puede hacer por vosotros: entender una empresa, descubrir qué le duele y escribir con precisión qué hay que construir. El cliente es Hidrotex. Construir con el agente llega en la UD4, sobre los datos de esta misma empresa.</p>
+    <ul class="goals" aria-label="Lo que se evalúa">
+      <li>RA6 a) Diagnosticar procesos mejorables con IA</li>
+      <li>RA2 a) Localizar las fuentes de datos</li>
+      <li>RA3 e) Especificar una necesidad de forma verificable</li>
+    </ul>
+  </header>
+
+  <div class="layout">
+    <nav class="steps" aria-label="Partes de la unidad">
+      <div class="progress"><span>La unidad</span></div>
+      <a href="#u1"><span class="n">1</span><span class="t">Contenidos</span></a>
+      <a href="#u2"><span class="n">2</span><span class="t">Sesiones</span></a>
+      <a href="#u3"><span class="n">3</span><span class="t">Qué se entrega y cómo cuenta</span></a>
+      <a href="#u4"><span class="n">4</span><span class="t">Qué viene en la UD4</span></a>
+    </nav>
+    <main>
+      <section class="step" id="u1">
+        <div class="step-head"><span class="step-num">1</span><div><h2>Contenidos</h2><span class="time">Lo que se trabaja en la unidad</span></div></div>
+        <div class="body">
+          <div class="table-wrap"><table class="roles">
+            <tr><th>Contenido</th><th>Dónde se trabaja</th></tr>
+            <tr><td><b>3.1</b> Qué es un agente de programación y qué es un arnés</td><td>Sesión 0 y revisión del documento con el agente</td></tr>
+            <tr><td><b>3.2</b> El sector y el modelo de negocio de la empresa</td><td>Sesión 1 · cuaderno, fase 0</td></tr>
+            <tr><td><b>3.3</b> Diagnóstico de necesidades con el Canvas de IA y priorización</td><td>Sesiones 2 y 3 · cuaderno, fases 1 a 3</td></tr>
+            <tr><td><b>3.4</b> Toma de requisitos: entrevista, documento de requisitos y ficha de especificación</td><td>Sesiones 3 a 6 · cuaderno, fases 2, 4 y 5</td></tr>
+          </table></div>
+        </div>
+      </section>
+
+      <section class="step" id="u2">
+        <div class="step-head"><span class="step-num">2</span><div><h2>Sesiones</h2><span class="time">Fechas previstas</span></div></div>
+        <div class="body">
+          <div class="table-wrap"><table class="roles">
+            <tr><th>Sesión</th><th>Qué hacemos</th><th>Contenido</th></tr>
+            <tr><td><b>0</b> · lun 28 sep</td><td>Máquina virtual, OpenCode y qué es un arnés</td><td>3.1</td></tr>
+            <tr><td><b>1</b> · mar 29 sep</td><td>El sector y el Canvas de modelo de negocio de Hidrotex</td><td>3.2</td></tr>
+            <tr><td><b>2</b> · vie 2 oct</td><td>Canvas de IA como guion y preguntas para Ramón</td><td>3.3</td></tr>
+            <tr><td><b>3</b> · lun 5 oct</td><td>Repreguntas en directo, necesidades priorizadas y Canvas de IA de la n.º 1</td><td>3.3 · 3.4</td></tr>
+            <tr><td><b>4</b> · mar 6 oct</td><td>Documento de requisitos (I)</td><td>3.4</td></tr>
+            <tr><td><b>5</b> · vie 9 oct</td><td>Documento de requisitos (II) y revisión con el agente en modo Plan</td><td>3.4 · 3.1</td></tr>
+            <tr><td><b>6</b> · mar 13 oct</td><td>Validación con el cliente, aprobación, decisión individual y test</td><td>3.4</td></tr>
+          </table></div>
+          <p style="font-size:14px;color:var(--muted)">El lunes 12 de octubre es festivo. Las fechas pueden moverse una sesión.</p>
+        </div>
+      </section>
+
+      <section class="step" id="u3">
+        <div class="step-head"><span class="step-num">3</span><div><h2>Qué se entrega y cómo cuenta</h2><span class="time">Evaluación de la unidad</span></div></div>
+        <div class="body">
+          <div class="table-wrap"><table class="roles">
+            <tr><th>Entrega</th><th>Quién</th><th>Tipo</th><th>Criterio</th></tr>
+            <tr><td>Sector, Canvas de modelo de negocio, Canvas de IA y necesidades priorizadas (cuaderno, fases 0 a 3)</td><td>Trío</td><td>Práctica</td><td>RA6 a)</td></tr>
+            <tr><td>Documento de requisitos y ficha de especificación, con el inventario de fuentes (cuaderno, fases 4 y 5)</td><td>Trío, con parte individual</td><td>Práctica</td><td>RA3 e) · RA2 a)</td></tr>
+            <tr><td>Decisión individual en clase: qué necesidad atacarías primero y por qué, citando una evidencia (10 minutos)</td><td>Individual</td><td>Teoría</td><td>RA6 a) · RA3 e)</td></tr>
+            <tr><td>Test de las píldoras (Socrative)</td><td>Individual</td><td>Teoría</td><td>Contenidos de la unidad</td></tr>
+          </table></div>
+          <div class="note"><b>Nota del trabajo en trío</b>60 % común (la misma para los tres) y 40 % individual: 20 % por cómo trabajas en tu rol y 20 % por la defensa, una pregunta oral al azar del tipo «¿de dónde sale esta cifra?» o «¿cómo comprobarías este requisito?».</div>
+        </div>
+      </section>
+
+      <section class="step" id="u4">
+        <div class="step-head"><span class="step-num">4</span><div><h2>Qué viene en la UD4</h2><span class="time">Pregúntale a tus datos</span></div></div>
+        <div class="body">
+          <p>Con el documento de requisitos aprobado, en la UD4 recibís los datos de Hidrotex y empezáis a construir con el agente: repositorio de trabajo y norma de las claves, inventario de fuentes con los datos reales, calidad del dato, errores escondidos que tendréis que encontrar, revisión de los tests y, después, la previsión de ventas.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+  </div><!-- /ud3 -->
+
+  <div class="panel" id="sesion0" role="tabpanel" aria-labelledby="tab-sesion0">
+  <header class="top">
+    <span class="eyebrow">IA aplicada a la empresa · 2.º DAM · Unidad 3</span>
+    <h1>Sesión <span class="zero">0</span>: el agente en tu máquina</h1>
+    <p class="lede">Hoy montamos el taller que usaremos todo el curso: una máquina virtual con Ubuntu, un agente de programación (OpenCode) conectado a un modelo gratuito, y tu primer arnés. Al final entenderás por qué el arnés importa tanto como el modelo.</p>
+    <ul class="goals" aria-label="Objetivos de hoy">
+      <li>Máquina virtual funcionando</li>
+      <li>OpenCode respondiendo</li>
+      <li>Sabes qué es un arnés y lo has cambiado</li>
+    </ul>
+  </header>
+
+  <div class="layout">
+    <nav class="steps" aria-label="Pasos de la sesión">
+      <div class="progress"><span class="prog-text">0 de 5 hechos</span><div class="bar"><span class="prog-bar"></span></div></div>
+      <a href="#paso1" data-step="paso1"><span class="n">1</span><span class="t">Importar la máquina</span></a>
+      <a href="#paso2" data-step="paso2"><span class="n">2</span><span class="t">Comprobar herramientas</span></a>
+      <a href="#paso3" data-step="paso3"><span class="n">3</span><span class="t">Conectar un modelo</span></a>
+      <a href="#paso4" data-step="paso4"><span class="n">4</span><span class="t">Qué es un arnés</span></a>
+      <a href="#paso5" data-step="paso5"><span class="n">5</span><span class="t">Cambia el arnés</span></a>
+    </nav>
+
+    <main>
+      <!-- PASO 1 -->
+      <section class="step" id="paso1">
+        <div class="step-head"><span class="step-num">1</span><div><h2>Importa la máquina virtual</h2><span class="time">≈ 10 minutos</span></div></div>
+        <div class="body">
+          <p>El profesor trae en un pendrive una máquina Ubuntu ya instalada, con todo lo necesario. No hay que instalar el sistema desde cero.</p>
+          <ol class="do">
+            <li>Copia el fichero <kbd>IA-Empresa.ova</kbd> del pendrive a tu disco (tarda un poco: son varios GB).</li>
+            <li>En VirtualBox: <span class="ui">Archivo → Importar servicio virtualizado</span> y elige el fichero.</li>
+            <li>Revisa la memoria: <b>4 GB</b> como mínimo; si tu equipo tiene 16 GB o más, pon 6-8 GB. Pulsa <span class="ui">Importar</span>.</li>
+            <li>Arranca la máquina. Usuario y contraseña: <kbd>alumno</kbd> / <kbd>alumno</kbd> (salvo que el profesor diga otra cosa).</li>
+            <li>Activa el portapapeles compartido para poder copiar comandos desde esta página: <span class="ui">Dispositivos → Portapapeles compartido → Bidireccional</span>. Si no funciona, abre esta misma página en el navegador de la máquina virtual.</li>
+          </ol>
+          <div class="note"><b>Avisos de ratón y teclado</b>VirtualBox te avisará de que «captura» el ratón y el teclado. Es normal: haz clic dentro de la máquina para usarla y pulsa <kbd>Ctrl</kbd> derecho para volver a tu equipo. Puedes marcar «Don't show again».</div>
+          <details>
+            <summary>Plan B: no hay .ova, instalo Ubuntu desde la ISO</summary>
+            <ol class="do">
+              <li><span class="ui">Nueva</span> → nombre <kbd>IA-Empresa</kbd>, elige la ISO de Ubuntu Desktop y marca <span class="ui">Omitir instalación desatendida</span>.</li>
+              <li>4 GB de RAM, 2 CPU y 40 GB de disco (reservado dinámicamente).</li>
+              <li>Arranca, elige <span class="ui">Instalación mínima</span> y crea el usuario <kbd>alumno</kbd>. Unos 20-30 minutos.</li>
+              <li>Al terminar, instala lo necesario con el bloque de comandos del paso 2.</li>
+            </ol>
+          </details>
+          <label class="check"><input type="checkbox" id="chk-paso1" data-step="paso1"> Tengo Ubuntu arrancado</label>
+        </div>
+      </section>
+
+      <!-- PASO 2 -->
+      <section class="step" id="paso2">
+        <div class="step-head"><span class="step-num">2</span><div><h2>Comprueba las herramientas</h2><span class="time">≈ 5 minutos</span></div></div>
+        <div class="body">
+          <p>Abre una terminal con <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>T</kbd> y pregunta por cada herramienta. Cada comando debe responder con un número de versión.</p>
+          <div class="cmd"><button class="copy" type="button">Copiar</button><pre>git --version
+python3 --version
+opencode --version</pre></div>
+          <details>
+            <summary>Alguno dice «orden no encontrada»</summary>
+            <p>Instala lo que falte (la contraseña es la de tu usuario; al escribirla no se ve nada, es normal):</p>
+            <div class="cmd"><button class="copy" type="button">Copiar</button><pre>sudo apt update
+sudo apt install -y git python3-venv curl
+curl -fsSL https://opencode.ai/install | bash
+exec bash   <span class="c"># recarga la terminal</span></pre></div>
+            <p>Si la línea de <kbd>curl</kbd> falla por la red del centro, la alternativa es <kbd>npm install -g opencode-ai</kbd>.</p>
+          </details>
+          <label class="check"><input type="checkbox" id="chk-paso2" data-step="paso2"> Las tres responden con versión</label>
+        </div>
+      </section>
+
+      <!-- PASO 3 -->
+      <section class="step" id="paso3">
+        <div class="step-head"><span class="step-num">3</span><div><h2>Conecta OpenCode a un modelo gratuito</h2><span class="time">≈ 10 minutos</span></div></div>
+        <div class="body">
+          <p>OpenCode es el agente; todavía no tiene cerebro. Vamos a conectarle un modelo de lenguaje gratuito a través de <b>OpenCode Zen</b>. Lo hace <b>el conductor de cada trío</b>, con una sola cuenta por trío.</p>
+          <div class="cmd"><button class="copy" type="button">Copiar</button><pre>mkdir -p ~/taller && cd ~/taller
+opencode</pre></div>
+          <ol class="do">
+            <li>Dentro de OpenCode escribe <kbd>/connect</kbd> y elige <span class="ui">OpenCode Zen</span>.</li>
+            <li>Se abre la web de OpenCode: inicia sesión y copia la clave (API key) que te da.</li>
+            <li>Vuelve a la terminal y pégala con <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>V</kbd>.</li>
+            <li>Escribe <kbd>/models</kbd> y mira la lista. Elige uno que ponga <b>Free</b>.</li>
+            <li>Primera pregunta: <i>«Explícame en tres líneas qué eres y qué herramientas tienes»</i>.</li>
+          </ol>
+          <div class="warn"><b>Ojo con los datos</b>Con los modelos gratuitos, el proveedor puede usar lo que escribas para entrenar sus modelos. Por eso en este curso solo trabajamos con datos inventados. Nunca pegues datos personales reales ni contraseñas.</div>
+          <div class="note"><b>Mira la lista de modelos</b>Cada modelo es un cerebro distinto: unos más rápidos, otros más listos, unos gratis y otros de pago. La lista cambia casi cada semana. Apunta cuál habéis elegido; el martes compararemos.</div>
+          <p>Para salir de OpenCode, <kbd>Ctrl</kbd> + <kbd>C</kbd>.</p>
+          <label class="check"><input type="checkbox" id="chk-paso3" data-step="paso3"> El agente me ha contestado</label>
+        </div>
+      </section>
+
+      <!-- PASO 4 -->
+      <section class="step" id="paso4">
+        <div class="step-head"><span class="step-num">4</span><div><h2>Qué es un arnés</h2><span class="time">≈ 10 minutos · explicación</span></div></div>
+        <div class="body">
+          <p>Un <b>modelo</b> solo sabe una cosa: recibir texto y predecir el texto que sigue (lo visteis en la UD1 con los tokens). No puede abrir un fichero ni ejecutar nada. Un <b>agente</b> es ese modelo metido en un bucle con herramientas: lee, decide, actúa, mira el resultado y repite.</p>
+          <p>El <b>arnés</b> es todo lo que rodea al modelo para que haga lo que queremos y no otra cosa. Como las riendas y la silla de un caballo: el caballo pone la fuerza; el arnés, la dirección.</p>
+
+          <div class="harness" role="img" aria-label="Diagrama: el modelo en el centro, rodeado por las cuatro piezas del arnés: contexto, herramientas, memoria y validación">
+            <span class="tag">OpenCode = el arnés</span>
+            <div class="harness-grid">
+              <div class="piece"><h4>Contexto</h4><p>Las reglas: cómo debe trabajar.</p><code>AGENTS.md</code></div>
+              <div class="brain"><span class="big">Modelo</span><p>El cerebro. Se puede cambiar por otro.</p></div>
+              <div class="piece"><h4>Herramientas</h4><p>Leer, buscar, ejecutar comandos.</p><code>la terminal</code></div>
+              <div class="piece"><h4>Memoria</h4><p>Lo que recuerda fuera de la conversación.</p><code>progress/</code></div>
+              <div class="piece"><h4>Validación</h4><p>Comprobar que no ha roto nada.</p><code>init.sh · tests</code></div>
+            </div>
+          </div>
+
+          <div class="note"><b>La idea clave</b>Cambiar de modelo es cambiar el cerebro; el arnés se queda. Y un arnés no mejora por tener más cosas: funciona mejor con pocas reglas y herramientas sencillas.</div>
+          <div class="note"><b>Consejo</b>La tecla <kbd>Tab</kbd> cambia entre el modo <b>Build</b> (el agente puede modificar ficheros) y el modo <b>Plan</b> (solo mira y propone). Cuando dudes, trabaja en Plan.</div>
+          <label class="check"><input type="checkbox" id="chk-paso4" data-step="paso4"> Sé explicar qué es un arnés</label>
+        </div>
+      </section>
+
+      <!-- PASO 5 -->
+      <section class="step" id="paso5">
+        <div class="step-head"><span class="step-num">5</span><div><h2>Cambia el arnés y observa</h2><span class="time">≈ 10 minutos · práctica</span></div></div>
+        <div class="body">
+          <p>Vamos a comprobar que el arnés cambia el comportamiento del agente <b>sin tocar el modelo</b>. Mismo cerebro, mismas preguntas, distintas reglas.</p>
+          <ol class="do">
+            <li>Dentro de <kbd>~/taller</kbd>, abre OpenCode y pregunta: <i>«¿Qué es un fichero CSV?»</i>. Apunta cómo contesta: longitud, idioma, tono.</li>
+            <li>Sal de OpenCode y crea tu primer arnés, un fichero de reglas:</li>
+          </ol>
+          <div class="cmd"><button class="copy" type="button">Copiar</button><pre>cat &gt; AGENTS.md &lt;&lt;'FIN'
+# Reglas del agente
+- Trabajas para Hidrotex, una distribuidora de fontanería de Don Benito.
+- Respondes siempre en español y en un máximo de 3 líneas.
+- Pones siempre un ejemplo con productos de fontanería.
+- Nunca modificas ficheros sin pedir permiso antes.
+FIN</pre></div>
+          <ol class="do" start="3">
+            <li>Vuelve a abrir OpenCode y haz <b>exactamente</b> la misma pregunta.</li>
+            <li>Ahora pídele: <i>«Crea un fichero notas.txt con la palabra hola»</i>. ¿Te pide permiso?</li>
+          </ol>
+          <div class="experiment">
+            <div><h4>Sin AGENTS.md</h4><p>Anota aquí, en tu cuaderno, qué hizo el agente.</p></div>
+            <div><h4>Con AGENTS.md</h4><p>¿Qué ha cambiado? ¿Ha cumplido las cuatro reglas? ¿Alguna no?</p></div>
+          </div>
+          <div class="warn"><b>Pregunta para el cierre</b>Si una regla del arnés no se cumple siempre, ¿cómo lo comprobarías? Esa es la pregunta de todo el curso: especificar, verificar y decidir.</div>
+          <label class="check"><input type="checkbox" id="chk-paso5" data-step="paso5"> He visto el cambio con mis propios ojos</label>
+        </div>
+      </section>
+
+      <!-- CIERRE -->
+      <section class="step" id="cierre">
+        <div class="step-head"><span class="step-num">✓</span><div><h2>Antes de irte</h2><span class="time">Para el viernes</span></div></div>
+        <div class="body">
+          <div class="table-wrap">
+            <table class="roles">
+              <tr><th>Qué</th><th>Por qué</th></tr>
+              <tr><td>Apaga la máquina con <span class="ui">Apagar</span> desde Ubuntu, no cerrando la ventana</td><td>Si se corta de golpe, se puede estropear el disco virtual</td></tr>
+              <tr><td>Crea tu cuenta de GitHub si no la tienes y apunta tu usuario en Moodle</td><td>Cada trío tendrá su repositorio del reto Hidrotex en los próximos días</td></tr>
+              <tr><td>Lee el correo de Ramón, el gerente de Hidrotex (pestaña «Sesión 1» de esta página)</td><td>El martes lo entrevistamos: trae 3 preguntas</td></tr>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  </div><!-- /sesion0 -->
+
+  <div class="panel" id="martes" role="tabpanel" aria-labelledby="tab-martes">
+  <header class="top">
+    <span class="eyebrow">IA aplicada a la empresa · 2.º DAM · Unidad 3 · Reto Hidrotex</span>
+    <h1>Sesión <span class="zero">1</span>: el sector y la empresa</h1>
+    <p class="lede">Antes de preguntar nada a un cliente hay que entender su mundo: cómo funciona su sector y cómo gana dinero su empresa. Hoy investigáis el sector de Hidrotex y bocetáis su Canvas de modelo de negocio. Lo que no sepáis rellenar serán vuestras preguntas para Ramón.</p>
+    <ul class="goals" aria-label="Objetivos de hoy">
+      <li>Ficha del sector</li>
+      <li>Canvas de modelo de negocio de Hidrotex</li>
+      <li>Lista de huecos</li>
+    </ul>
+  </header>
+
+  <div class="layout">
+    <nav class="steps" aria-label="Pasos de la sesión 1">
+      <div class="progress"><span class="prog-text">0 de 5 hechos</span><div class="bar"><span class="prog-bar"></span></div></div>
+      <a href="#m1" data-step="m1"><span class="n">1</span><span class="t">Conoce a Hidrotex</span></a>
+      <a href="#m2" data-step="m2"><span class="n">2</span><span class="t">Investiga el sector</span></a>
+      <a href="#m3" data-step="m3"><span class="n">3</span><span class="t">Canvas de modelo de negocio</span></a>
+      <a href="#m4" data-step="m4"><span class="n">4</span><span class="t">Los huecos</span></a>
+      <a href="#m5" data-step="m5"><span class="n">5</span><span class="t">Qué pasa después</span></a>
+    </nav>
+
+    <main>
+      <section class="step" id="m1">
+        <div class="step-head"><span class="step-num">1</span><div><h2>Conoce a Hidrotex</h2><span class="time">≈ 5 minutos · lectura</span></div></div>
+        <div class="body">
+          <p>Si alguien no terminó la instalación del lunes, que la acabe al final de la sesión (pestaña <b>Sesión 0</b>): hoy no hace falta el agente.</p>
+          <div class="table-wrap"><table class="roles">
+            <tr><th>Hidrotex Suministros S.L.</th><th>(empresa inventada para el curso)</th></tr>
+            <tr><td><b>Actividad</b></td><td>Distribución de material de fontanería, calefacción, climatización, agua caliente y riego</td></tr>
+            <tr><td><b>Dónde</b></td><td>Don Benito (Badajoz). Nave 1: mostrador, oficina y almacén general. Nave 2, a 300 m: climatización y riego</td></tr>
+            <tr><td><b>Desde</b></td><td>1997. Segunda generación: la fundó el padre del gerente actual</td></tr>
+            <tr><td><b>Plantilla</b></td><td>22 personas: gerente, 2 administrativas, 3 comerciales, 5 en mostrador, 8 en almacén y reparto, 1 jefe de almacén y 2 técnicos de posventa</td></tr>
+            <tr><td><b>Clientes</b></td><td>Unos 90 profesionales habituales (instaladores, constructoras, empresas de mantenimiento, comunidades de regantes) y particulares de paso</td></tr>
+            <tr><td><b>Zona</b></td><td>Vegas Altas y La Serena, algo de Mérida y del norte (Miajadas)</td></tr>
+            <tr><td><b>Temporadas</b></td><td>Verano: aire acondicionado. Invierno: calderas y radiadores. Primavera: riego. Agosto: medio cerrado</td></tr>
+            <tr><td><b>Gerente</b></td><td>Ramón Gallardo, 52 años, al frente desde 2011. Sabe de negocio y de fontanería; de informática, lo justo. Desconfía de los vendedores que prometen milagros, pero ha oído que la competencia de Mérida «ya usa inteligencia artificial»</td></tr>
+            <tr><td><b>Sistemas que usan</b></td><td>Programa de gestión en un servidor de la oficina desde 2009 (artículos, albaranes, facturas) · hoja de clientes que empezó una comercial y ahora comparten los tres · WhatsApp del mostrador, por donde piden muchos instaladores · carpeta con fichas técnicas y tarifas en PDF · Excel del jefe de almacén para el stock de la nave 2</td></tr>
+          </table></div>
+          <div class="email">
+            <div class="meta">De: Ramón Gallardo · Hidrotex Suministros<br>Asunto: Lo de la inteligencia artificial</div>
+            <p>Buenos días:</p>
+            <p>Os escribo porque me ha dicho vuestro profesor que tenéis ganas de trabajar con una empresa de verdad, y a mí me viene bien que alguien me eche una mano con esto de la inteligencia artificial, que no paro de oír hablar de ello.</p>
+            <p>Os cuento cómo estamos. En el mostrador se forman colas por la mañana: la mitad de las preguntas son técnicas («¿esta caldera vale para suelo radiante?», «¿qué split me pongo para 25 metros?») y solo dos de mis chicos saben contestarlas bien. Cada verano me quedo sin aparatos de aire en junio porque los pido tarde, y cada invierno me sobran calderas. Los pedidos por WhatsApp se nos pierden. Y los comerciales me dicen que hay clientes que han dejado de comprarnos y no nos damos ni cuenta.</p>
+            <p>Un vendedor me ofreció el mes pasado un «asistente con IA» por 400 euros al mes. No lo he firmado porque no sé si me hace falta ni si mis datos sirven para algo.</p>
+            <p>Así que os pido una cosa concreta antes de gastarme un euro: <b>decidme qué datos tengo</b>, dónde están y para qué podrían servir, y <b>decidme si están en condiciones</b> de usarse o si primero hay que arreglar algo. Ya os aviso de que no me fío mucho.</p>
+            <p>Ando liado con la temporada, así que mandadme las preguntas por escrito y os contesto en cuanto pueda.</p>
+            <p>Un saludo,<br>Ramón Gallardo, gerente · Hidrotex Suministros S.L.</p>
+          </div>
+          <label class="check"><input type="checkbox" id="chk-m1" data-step="m1"> He leído la ficha y el correo</label>
+        </div>
+      </section>
+
+      <section class="step" id="m2">
+        <div class="step-head"><span class="step-num">2</span><div><h2>Investiga el sector</h2><span class="time">≈ 15 minutos · en trío</span></div></div>
+        <div class="body">
+          <p>Hidrotex es una <b>distribuidora de material de fontanería y climatización</b>. ¿Cómo funciona ese tipo de negocio? Investigadlo con la web, buscadores o un asistente de IA, y rellenad la <b>fase 0 · El sector</b> del cuaderno.</p>
+          <div class="table-wrap"><table class="roles">
+            <tr><th>Pregunta</th><th>Pista</th></tr>
+            <tr><td>¿Cómo es la cadena? ¿Dónde está Hidrotex?</td><td>¿Quién fabrica, quién distribuye, quién instala, quién paga?</td></tr>
+            <tr><td>¿Clientes típicos y qué les importa?</td><td>¿Qué es un instalador? ¿Por qué compra en una distribuidora y no en una gran superficie?</td></tr>
+            <tr><td>¿Temporadas o picos?</td><td>¿Cuándo se vende el aire acondicionado? ¿Y cuándo hay que comprarlo?</td></tr>
+            <tr><td>¿Con quién se compite?</td><td>Grandes superficies, venta online, otras distribuidoras</td></tr>
+            <tr><td>¿Qué está cambiando?</td><td>Aerotermia, normativa energética, subvenciones, pedidos online</td></tr>
+            <tr><td>¿Qué se hace ya con IA o digitalización?</td><td>En distribuidoras, tiendas online y empresas de suministros</td></tr>
+            <tr><td>Palabras del sector</td><td>Al menos cinco que tengáis que conocer para hablar con Ramón</td></tr>
+          </table></div>
+          <div class="note"><b>Aquí sí podéis usar la IA</b>Es información general. Pero todo lo que saquéis va marcado <kbd>[S]</kbd> hasta que Ramón lo confirme: cada empresa es distinta de la media de su sector.</div>
+          <label class="check"><input type="checkbox" id="chk-m2" data-step="m2"> Ficha del sector rellena</label>
+        </div>
+      </section>
+
+      <section class="step" id="m3">
+        <div class="step-head"><span class="step-num">3</span><div><h2>El Canvas de modelo de negocio de Hidrotex</h2><span class="time">≈ 20 minutos · en trío</span></div></div>
+        <div class="body">
+          <p>El <b>Canvas de modelo de negocio</b> resume en una hoja cómo funciona una empresa. Bocetad el de Hidrotex con la ficha y el correo (fase 0 del cuaderno). Así quedaría el de un taller mecánico inventado:</p>
+          <div class="table-wrap"><table class="canvas">
+            <tr><th>Bloque</th><th>Pregunta</th><th>Ejemplo · taller</th></tr>
+            <tr><td>1</td><td><b>Segmentos de clientes.</b> ¿A quién sirve?</td><td>Particulares, empresas con furgonetas, clientes de aseguradoras</td></tr>
+            <tr class="yours"><td>2</td><td><b>Propuesta de valor.</b> ¿Por qué la eligen?</td><td>Coche arreglado rápido, sin sorpresas en la factura</td></tr>
+            <tr><td>3</td><td><b>Canales.</b> ¿Cómo llega a sus clientes?</td><td>Boca a boca, reseñas de Google, aseguradoras</td></tr>
+            <tr><td>4</td><td><b>Relación con clientes.</b> ¿Cómo trata con ellos?</td><td>Trato personal, teléfono y WhatsApp</td></tr>
+            <tr><td>5</td><td><b>Fuentes de ingresos.</b> ¿Por qué le pagan?</td><td>Mano de obra, margen de piezas, revisiones</td></tr>
+            <tr><td>6</td><td><b>Recursos clave.</b> ¿Qué necesita tener?</td><td>Mecánicos, elevadores, diagnosis, programa del taller</td></tr>
+            <tr><td>7</td><td><b>Actividades clave.</b> ¿Qué tiene que hacer bien?</td><td>Diagnosticar, reparar, conseguir piezas rápido</td></tr>
+            <tr><td>8</td><td><b>Socios clave.</b> ¿De quién depende?</td><td>Distribuidores de recambios, aseguradoras, grúas</td></tr>
+            <tr class="yours"><td>9</td><td><b>Estructura de costes.</b> ¿En qué se va el dinero?</td><td>Sueldos, piezas, local… y 40 horas al mes al teléfono</td></tr>
+          </table></div>
+          <div class="note"><b>Dónde está la IA</b>La IA merece la pena cuando toca una actividad clave, mejora la propuesta de valor o reduce un coste importante. En el taller, la oportunidad estaba escondida en los costes.</div>
+          <label class="check"><input type="checkbox" id="chk-m3" data-step="m3"> Canvas de Hidrotex bocetado</label>
+        </div>
+      </section>
+
+      <section class="step" id="m4">
+        <div class="step-head"><span class="step-num">4</span><div><h2>Los huecos: vuestras futuras preguntas</h2><span class="time">≈ 10 minutos · en trío</span></div></div>
+        <div class="body">
+          <p>Con la ficha y el correo no podréis rellenar todo. Mejor: <b>cada bloque que no sepáis rellenar es una pregunta para Ramón</b>, y cada dato del sector marcado <kbd>[S]</kbd> es algo que hay que confirmar.</p>
+          <div class="table-wrap"><table class="roles">
+            <tr><th>Hueco</th><th>Pregunta que sale de él</th></tr>
+            <tr><td>Socios clave: ?</td><td>«¿Quién os sirve el material y con cuánto plazo?»</td></tr>
+            <tr><td>Estructura de costes: ?</td><td>«¿Qué os cuesta más cada mes, aparte de los sueldos?»</td></tr>
+            <tr><td>Sector: «el aire se compra en primavera» [S]</td><td>«¿Cuándo hacéis el pedido de aire acondicionado? ¿Con qué criterio?»</td></tr>
+          </table></div>
+          <p>Apuntadlos en la tabla <b>«Huecos que se convierten en preguntas»</b> de la fase 0. El viernes los convertiréis en el guion definitivo.</p>
+          <label class="check"><input type="checkbox" id="chk-m4" data-step="m4"> Lista de huecos apuntada</label>
+        </div>
+      </section>
+
+      <section class="step" id="m5">
+        <div class="step-head"><span class="step-num">5</span><div><h2>Qué pasa después</h2><span class="time">Hasta la semana que viene</span></div></div>
+        <div class="body">
+          <div class="table-wrap"><table class="roles">
+            <tr><th>Cuándo</th><th>Qué pasa</th></tr>
+            <tr><td><b>Viernes 2</b></td><td>Canvas de IA como guion y preguntas para Ramón a Moodle (pestaña <b>Sesión 2</b>).</td></tr>
+            <tr><td><b>Fin de semana</b></td><td>Ramón publica en Moodle un documento con todas las respuestas, para toda la clase.</td></tr>
+            <tr><td><b>Semana siguiente</b></td><td>Repreguntas en directo a Ramón, necesidades priorizadas y Canvas de IA de la n.º 1.</td></tr>
+          </table></div>
+          <label class="check"><input type="checkbox" id="chk-m5" data-step="m5"> Sé qué toca el viernes</label>
+        </div>
+      </section>
+    </main>
+  </div>
+  </div><!-- /martes -->
+
+  <div class="panel" id="viernes" role="tabpanel" aria-labelledby="tab-viernes">
+  <header class="top">
+    <span class="eyebrow">IA aplicada a la empresa · 2.º DAM · Unidad 3 · Reto Hidrotex</span>
+    <h1>Sesión <span class="zero">2</span>: las preguntas para Ramón</h1>
+    <p class="lede">Con el sector y el Canvas de modelo de negocio ya bocetados, hoy preparáis el guion definitivo con el Canvas de IA y enviáis las preguntas a Ramón, que os contestará por escrito.</p>
+    <ul class="goals" aria-label="Objetivos del viernes">
+      <li>Guion de 8-10 preguntas</li>
+      <li>Preguntas enviadas a Ramón</li>
+    </ul>
+  </header>
+  <div class="layout">
+    <nav class="steps" aria-label="Pasos de la sesión 2">
+      <div class="progress"><span class="prog-text">0 de 2 hechos</span><div class="bar"><span class="prog-bar"></span></div></div>
+      <a href="#v1" data-step="v1"><span class="n">1</span><span class="t">El Canvas de IA como guion</span></a>
+      <a href="#v2" data-step="v2"><span class="n">2</span><span class="t">Envía las preguntas</span></a>
+    </nav>
+    <main>
+      <section class="step" id="v1">
+        <div class="step-head"><span class="step-num">1</span><div><h2>El Canvas de IA: tu guion de entrevista</h2><span class="time">≈ 25 minutos · explicación y preparación</span></div></div>
+        <div class="body">
+          <p>El Canvas de IA es una hoja con <b>9 preguntas</b> que convierte un problema de empresa en algo que se puede resolver, o descartar con argumentos. Se hace <b>una hoja por necesidad</b>. Así queda relleno, con un ejemplo que no es Hidrotex:</p>
+          <div class="note"><b>Ejemplo · Autotaller La Vega (taller inventado)</b>El dueño pedía «una IA que diagnostique averías». Al preguntar por la última semana salió otra cosa: el teléfono no para.</div>
+          <div class="table-wrap"><table class="canvas">
+            <tr><th>#</th><th>Pregunta</th><th>En el taller</th></tr>
+            <tr><td>1</td><td><b>Proceso y dolor.</b> ¿Qué falla y a quién le duele?</td><td>Los clientes llaman para preguntar «¿cómo va mi coche?». El jefe de taller deja lo que hace, va a mirar y vuelve. Los clientes se quejan de que nadie coge el teléfono.</td></tr>
+            <tr><td>2</td><td><b>Volumen y frecuencia.</b> ¿Cuántas veces pasa?</td><td>Unas 35 llamadas al día de 3 minutos: casi 2 horas diarias del jefe de taller.</td></tr>
+            <tr><td>3</td><td><b>Decisión o tarea.</b> ¿Qué queremos automatizar o apoyar?</td><td>Decir en qué estado está una reparación y avisar cuando el coche está listo.</td></tr>
+            <tr><td>4</td><td><b>Datos disponibles.</b> ¿Qué hay y en qué estado?</td><td>El programa del taller guarda cada orden con matrícula, teléfono y estado. A veces el estado se actualiza al final del día.</td></tr>
+            <tr><td>5</td><td><b>Tipo de solución y por qué.</b> Reglas, ML clásico, clasificación rápida, modelo de lenguaje, RAG o agente</td><td>Reglas y avisos automáticos por WhatsApp, más un asistente que lee el estado por matrícula. La IA solo entiende la pregunta del cliente. Descartado: diagnosticar averías con IA (error caro y difícil de comprobar).</td></tr>
+            <tr class="yours"><td>6</td><td><b>Coste del error.</b> ¿Qué pasa si se equivoca? ¿Quién lo revisa?</td><td>Decir «listo» cuando no lo está: el cliente viene para nada. El asistente nunca decide el estado; si la orden lleva más de 24 h sin actualizar, pasa el mensaje al taller.</td></tr>
+            <tr><td>7</td><td><b>Métrica de éxito.</b> ¿Qué número dice que funciona?</td><td>Llamadas de estado al día: hoy 35, objetivo menos de 10.</td></tr>
+            <tr class="yours"><td>8</td><td><b>Riesgos y cumplimiento.</b> ¿Datos personales? ¿Riesgo según el Reglamento de IA?</td><td>Teléfono y matrícula son datos personales: informar al cliente y no usar un servicio que entrene con los mensajes. El cliente debe saber que habla con un asistente automático.</td></tr>
+            <tr><td>9</td><td><b>Valor frente a coste.</b> ¿Cuánto ahorra y cuánto cuesta?</td><td>Unas 40 horas al mes del jefe de taller (unos 800 €). Coste: unas decenas de euros al mes.</td></tr>
+          </table></div>
+          <div class="note"><b>Lo que enseña este caso</b>Lo que el cliente pide primero no siempre es lo que más le duele. Y la mejor solución no es la más lista: casi todo son reglas y avisos automáticos.</div>
+          
+          <div class="note"><b>Las casillas en naranja</b>El coste del error y los riesgos no los puede rellenar un agente por vosotros: hay que pensarlos.</div>
+          <p><b>El truco:</b> cada casilla es una pregunta que tenéis que hacerle al cliente. Si una casilla se queda vacía, faltó una pregunta.</p>
+          <div class="table-wrap"><table class="roles">
+            <tr><th>Casilla</th><th>Qué hay que preguntarle a Ramón</th></tr>
+            <tr><td>1 · Proceso y dolor</td><td>¿Qué os hace perder más tiempo o dinero? ¿A quién le afecta?</td></tr>
+            <tr><td>2 · Volumen</td><td>¿Cuántas veces pasa al día o a la semana?</td></tr>
+            <tr><td>3 · Decisión o tarea</td><td>¿Qué decisión tomáis ahí? ¿Quién la toma y cómo?</td></tr>
+            <tr><td>4 · Datos</td><td>¿Dónde se apunta eso ahora? ¿En qué programa? ¿Desde cuándo?</td></tr>
+            <tr><td>6 · Coste del error</td><td>Si sale mal, ¿qué pasa? ¿Cuánto cuesta?</td></tr>
+            <tr><td>7 · Métrica</td><td>¿Cómo sabríais que ha mejorado?</td></tr>
+            <tr><td>9 · Valor</td><td>¿Cuánto os cuesta no resolverlo? ¿Cuánto podéis gastar?</td></tr>
+          </table></div>
+          <p>Las casillas 5 (tipo de solución) y 8 (riesgos) no se preguntan: las decidís vosotros después.</p>
+          <p><b>Ahora, en trío:</b> juntad los huecos del Canvas de modelo de negocio (martes) y las casillas del Canvas de IA, y preparad <b>entre 8 y 10 preguntas</b> en la <b>fase 1 del cuaderno</b>. Una buena pregunta consigue una cifra, un ejemplo reciente o el nombre de quien sufre el problema. Una mala se contesta con «sí» o «no».</p>
+          <div class="table-wrap"><table class="roles">
+            <tr><th>Se contesta con sí o no</th><th>Da información que se puede usar</th></tr>
+            <tr><td>¿Tenéis problemas en el mostrador?</td><td>¿Cuántas consultas técnicas os llegan al día?</td></tr>
+            <tr><td>¿Os va bien con el stock?</td><td>¿Cuándo os quedasteis sin un producto por última vez? ¿Qué pasó?</td></tr>
+            <tr><td>¿Los datos están bien?</td><td>¿Cómo se sacaron los datos que nos habéis mandado?</td></tr>
+          </table></div>
+          <label class="check"><input type="checkbox" id="chk-v1" data-step="v1"> Tenemos 8-10 preguntas, cada una con su casilla</label>
+        </div>
+      </section>
+
+      <section class="step" id="v2">
+        <div class="step-head"><span class="step-num">2</span><div><h2>Envía las preguntas a Ramón</h2><span class="time">≈ 10 minutos · antes de salir de clase</span></div></div>
+        <div class="body">
+          <p>Ramón no tiene tiempo para venir y os contesta por escrito. Subid vuestras preguntas a la <b>tarea de Moodle «Preguntas para Ramón»</b>, una entrega por trío, con este formato:</p>
+          <div class="cmd"><button class="copy" type="button">Copiar</button><pre>1. [Casilla 2 · Volumen] En el correo dice que se pierden pedidos de WhatsApp.
+   ¿Cuántos pedidos llegan por WhatsApp al día y cuántos se pierden a la semana?
+   Por qué la hacemos: para saber si el problema es grande o anecdótico.</pre></div>
+          <ol class="do">
+            <li><b>Numerad</b> las preguntas.</li>
+            <li>Indicad la <b>casilla</b> del Canvas a la que pertenece cada una.</li>
+            <li>Explicad en una línea <b>por qué la hacéis</b>. Una pregunta sin motivo es una pregunta de relleno.</li>
+            <li>Marcad con <b>★</b> las tres imprescindibles.</li>
+          </ol>
+          <div class="warn"><b>Ramón contesta como un empresario</b>Si la pregunta es vaga, la respuesta será vaga. Si nadie pregunta por algo, no lo cuenta. Y si os pide algo raro, decidlo.</div>
+          <label class="check"><input type="checkbox" id="chk-v2" data-step="v2"> Preguntas subidas a Moodle</label>
+        </div>
+      </section>
+
+    </main>
+  </div>
+  </div><!-- /viernes -->
+
+  <div class="panel" id="kit" role="tabpanel" aria-labelledby="tab-kit">
+  <header class="top">
+    <span class="eyebrow">Para todo el curso · y para tu primer trabajo</span>
+    <h1>Kit de <span class="zero">requisitos</span></h1>
+    <p class="lede">Cómo pasar de «tengo un problema» a «esto es exactamente lo que hay que construir». Sirve para Hidrotex, para la empresa de tus prácticas y para cualquier cliente que tengas el día de mañana.</p>
+    <ul class="goals" aria-label="Las cinco fases">
+      <li>0 · Sector y empresa</li>
+      <li>1 · Prepara</li>
+      <li>2 · Entrevista</li>
+      <li>3 · Ordena</li>
+      <li>4 · Especifica</li>
+    </ul>
+    <div class="dl">
+      <a href="descargas/Toma_de_requisitos_Guia_y_cuaderno.pdf" download>↓ Guía y cuaderno (PDF)</a>
+      <a class="alt" href="descargas/Toma_de_requisitos_Guia_y_cuaderno.docx" download>↓ Versión editable (Word)</a>
+    </div>
+  </header>
+
+  <div class="layout">
+    <nav class="steps" aria-label="Fases del kit">
+      <div class="progress"><span>Fases</span></div>
+      <a href="#k0"><span class="n">0</span><span class="t">Sector y empresa</span></a>
+      <a href="#k1"><span class="n">1</span><span class="t">Prepara la entrevista</span></a>
+      <a href="#k2"><span class="n">2</span><span class="t">Durante la entrevista</span></a>
+      <a href="#k3"><span class="n">3</span><span class="t">Ordena y prioriza</span></a>
+      <a href="#k4"><span class="n">4</span><span class="t">Especifica</span></a>
+      <a href="#k5"><span class="n">↓</span><span class="t">Plantillas</span></a>
+    </nav>
+
+    <main>
+      <section class="step" id="k0">
+        <div class="step-head"><span class="step-num">0</span><div><h2>Entiende el sector y la empresa</h2><span class="time">Antes de preparar ninguna pregunta</span></div></div>
+        <div class="body">
+          <p><b>El sector:</b> cómo es la cadena (quién fabrica, distribuye, instala y paga), clientes típicos, temporadas, competencia, qué está cambiando y qué se hace ya con IA. Se puede investigar con IA, pero todo va marcado <kbd>[S]</kbd> hasta que el cliente lo confirme.</p>
+          <p><b>La empresa:</b> el <b>Canvas de modelo de negocio</b> (Alexander Osterwalder), con sus nueve bloques: segmentos de clientes, propuesta de valor, canales, relación con clientes, fuentes de ingresos, recursos clave, actividades clave, socios clave y estructura de costes.</p>
+          <div class="note"><b>Por qué importa</b>La IA merece la pena cuando toca una actividad clave, mejora la propuesta de valor o reduce un coste importante. Y cada bloque que no sepáis rellenar es una pregunta para el cliente.</div>
+          <div class="note"><b>Si el cliente os quiere como partner</b>Sector y Canvas de modelo de negocio para toda la empresa; un Canvas de IA para cada una de las 2 o 3 necesidades con más prioridad; y el documento de requisitos solo para la que se va a construir.</div>
+        </div>
+      </section>
+
+      <section class="step" id="k1">
+        <div class="step-head"><span class="step-num">1</span><div><h2>Prepara la entrevista</h2><span class="time">Antes de ver al cliente</span></div></div>
+        <div class="body">
+          <ol class="do">
+            <li>Lee todo lo que tengas del cliente: su web, su correo, sus datos.</li>
+            <li>Escribe tu guion a partir del <b>Canvas de IA</b>: al menos una pregunta por casilla (menos la 5 y la 8, que decides tú).</li>
+            <li>Convierte cada pregunta de sí o no en una que pida una <b>cifra</b>, un <b>ejemplo reciente</b> o un <b>nombre</b>.</li>
+            <li>Ordena de lo general a lo concreto: primero cómo trabajan, después dónde falla, al final los datos.</li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="step" id="k2">
+        <div class="step-head"><span class="step-num">2</span><div><h2>Durante la entrevista</h2><span class="time">Escuchar más que hablar</span></div></div>
+        <div class="body">
+          <div class="table-wrap"><table class="roles">
+            <tr><th>Técnica</th><th>Cómo suena</th></tr>
+            <tr><td><b>Pide la última vez</b></td><td>«¿Cuándo fue la última vez que pasó? Cuéntamela.» Un caso real vale más que una opinión general.</td></tr>
+            <tr><td><b>Repregunta la cifra</b></td><td>«¿Muchos cuántos? ¿Diez al día o cien?»</td></tr>
+            <tr><td><b>Pregunta de dónde sale</b></td><td>«¿Eso cómo lo sabes? ¿Lo tenéis apuntado en algún sitio?»</td></tr>
+            <tr><td><b>Separa hechos y opiniones</b></td><td>«Se pierden pedidos» es una opinión hasta que alguien dice cuántos.</td></tr>
+            <tr><td><b>Busca a quien sufre el problema</b></td><td>«¿Quién lo nota primero?» A veces no es quien habla contigo.</td></tr>
+            <tr><td><b>Resume al final</b></td><td>«Si lo he entendido bien, lo que más os duele es…» El cliente corrige lo que entendiste mal.</td></tr>
+          </table></div>
+          <div class="warn"><b>No propongas soluciones durante la entrevista</b>Si dices «eso se arregla con un chatbot», el cliente dejará de contarte el problema y empezará a opinar sobre el chatbot.</div>
+          <div class="warn"><b>Detecta las peticiones problemáticas</b>Si el cliente pide algo que afecta a personas (vigilar a empleados, decidir sobre clientes, usar sus datos personales), anótalo y señálalo: puede ser ilegal o de alto riesgo según el Reglamento europeo de IA y el RGPD.</div>
+        </div>
+      </section>
+
+      <section class="step" id="k3">
+        <div class="step-head"><span class="step-num">3</span><div><h2>Ordena y prioriza</h2><span class="time">Mejor el mismo día</span></div></div>
+        <div class="body">
+          <ol class="do">
+            <li>Pasa las notas al Canvas de IA, <b>una hoja por necesidad</b>. Lo que no sepas, «no lo sabemos».</li>
+            <li>Cada casilla vacía es una pregunta pendiente para el cliente: apúntala.</li>
+            <li>Puntúa cada necesidad: <b>valor</b> (1-5), <b>facilidad</b> (1-5) y <b>¿datos listos?</b></li>
+            <li>Empieza por la que tiene más valor <b>y</b> datos disponibles, no por la más vistosa.</li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="step" id="k4">
+        <div class="step-head"><span class="step-num">4</span><div><h2>Especifica: documento de requisitos y ficha</h2><span class="time">Lo que el agente necesita para planificar y construir</span></div></div>
+        <div class="body">
+          <p>Con el Canvas decidís <b>si</b> merece la pena. Con el <b>documento de requisitos</b> decís <b>qué</b> hay que construir, con todo detalle. Es lo que lee el agente en <b>modo Plan</b>: lo que falte en el documento, el agente se lo inventará.</p>
+          <div class="table-wrap"><table class="roles">
+            <tr><th>Herramienta</th><th>Para qué</th><th>Cuándo</th></tr>
+            <tr><td><b>Canvas de IA</b></td><td>Diagnosticar: ¿merece la pena? ¿con qué datos?</td><td>Después de la entrevista</td></tr>
+            <tr><td><b>Documento de requisitos</b></td><td>Describir por completo qué debe hacer la solución. Entrada del agente en modo Plan</td><td>Antes de construir, una vez por necesidad</td></tr>
+            <tr><td><b>Ficha de especificación</b></td><td>Resumen de una página (secciones 3, 6 y 11 del documento) para cada entrega concreta</td><td>En cada reto</td></tr>
+          </table></div>
+          <p><b>Tres reglas del documento:</b> cada dato del cliente lleva su origen (<kbd>[E]</kbd> entrevista, <kbd>[C]</kbd> correo, <kbd>[D]</kbd> datos); lo que no sepáis se escribe como «no lo sabemos» y pasa a preguntas abiertas; y el documento no dice cómo programar, solo qué debe cumplirse.</p>
+          <p>La plantilla completa está más abajo, en <b>Plantillas para copiar</b>, y en el repositorio como <kbd>specs/requisitos.md</kbd>.</p>
+          <p><b>La ficha de especificación</b> dice <b>qué</b> debe cumplir el resultado, nunca <b>cómo</b> hacerlo. Tiene cuatro partes y cabe en una página.</p>
+          <div class="table-wrap"><table class="roles">
+            <tr><th>Parte</th><th>Ejemplo bueno (clasificar correo de una gestoría)</th></tr>
+            <tr><td><b>Historia de usuario</b></td><td>Como administrativa, quiero que cada correo llegue clasificado a su departamento, para no perder la primera hora del día repartiéndolos.</td></tr>
+            <tr><td><b>Criterios de aceptación</b> (3 a 5)</td><td>Dado un correo que pide una cita, cuando se procese, entonces se etiqueta como «Citas».</td></tr>
+            <tr><td><b>Tabla de ejemplos</b> (5 a 10) y umbral</td><td>«¿Puedo pasar el jueves a firmar?» → Citas · «Adjunto la factura de marzo» → Contabilidad… Umbral: 45 de 50 correctos.</td></tr>
+            <tr><td><b>Fuera de alcance</b></td><td>No responde a los correos; solo los clasifica.</td></tr>
+          </table></div>
+          <div class="warn"><b>Así no</b>«Que clasifique bien los correos y que sea rápido» no se puede comprobar. «Usar un modelo de lenguaje con un prompt» dice cómo, no qué. Si no puedes verificarlo, no es una especificación.</div>
+        </div>
+      </section>
+
+      <section class="step" id="k5">
+        <div class="step-head"><span class="step-num">↓</span><div><h2>Plantillas para copiar</h2><span class="time">Pégalas en tu documento</span></div></div>
+        <div class="body">
+          <p><b>Notas de entrevista</b></p>
+          <div class="cmd"><button class="copy" type="button">Copiar</button><pre>NOTAS DE ENTREVISTA
+Empresa: ____   Entrevistado: ____   Fecha: ____
+
+Preguntas preparadas (casilla del Canvas → pregunta)
+1. [ ] →
+2. [ ] →
+3. [ ] →
+
+Respuestas (anota la casilla al lado de cada una)
+- [ ]
+
+Fuentes de datos que ha mencionado
+-
+
+Lo que nos ha sorprendido o nos suena raro
+- </pre></div>
+          <p><b>Canvas de IA</b> (una hoja por necesidad)</p>
+          <div class="cmd"><button class="copy" type="button">Copiar</button><pre>CANVAS DE IA
+Empresa: ____   Necesidad n.º __: ____   Trío: ____
+
+1. Proceso y dolor:
+2. Volumen y frecuencia:
+3. Decisión o tarea a automatizar o apoyar:
+4. Datos disponibles (dónde están y en qué estado):
+5. Tipo de solución y por qué
+   (reglas / ML clásico / clasificación rápida / modelo de lenguaje / RAG / agente):
+6. Coste del error y quién lo revisa:
+7. Métrica de éxito:
+8. Riesgos y cumplimiento (datos personales, Reglamento de IA):
+9. Valor estimado frente a coste:
+
+PRIORIDADES DEL TRÍO
+| Prioridad | Necesidad | Valor 1-5 | Facilidad 1-5 | ¿Datos listos? |
+| 1 |  |  |  |  |
+| 2 |  |  |  |  |
+| 3 |  |  |  |  |</pre></div>
+          <p><b>Documento de requisitos completo</b> (va en <kbd>specs/requisitos.md</kbd> del repositorio)</p>
+          <div class="cmd long"><button class="copy" type="button">Copiar</button><pre># Documento de requisitos — [nombre corto de la necesidad]
+
+&gt; **Qué es este documento.** Recoge todo lo que sabemos de una necesidad del cliente antes de construir nada: el problema, quién lo sufre, qué datos hay, qué debe hacer la solución, cómo sabremos que funciona y qué no sabemos todavía. Es la entrada del agente en **modo Plan**: si aquí falta algo, el plan lo inventará.
+&gt;
+&gt; **Cómo se rellena.**
+&gt; - Una copia de este documento por necesidad (la n.º 1 del Canvas de IA).
+&gt; - Cada dato del cliente lleva su **origen** entre corchetes: `[E]` entrevista, `[C]` correo, `[D]` datos, `[F]` ficha de la empresa. Lo que no tenga origen es una suposición y va a la sección 14.
+&gt; - Si no sabes algo, escribe **«no lo sabemos»** y añade la pregunta a la sección 14. Un hueco declarado vale más que un dato inventado.
+&gt; - Las secciones marcadas con **(obligatoria)** no pueden quedar vacías para pedir la aprobación.
+&gt; - Las líneas que empiezan por `&gt;` son ayuda: bórralas cuando rellenes la sección.
+
+| Campo | Valor |
+| --- | --- |
+| Empresa | |
+| Trío | |
+| Versión | 0.1 |
+| Estado | BORRADOR &lt;!-- El profesor lo cambia a APROBADO --&gt; |
+| Fecha | |
+| Fuentes usadas | Entrevista del __/__ · correo del gerente · ficha · carpeta `datos/` |
+
+---
+
+## 1. Contexto del negocio
+
+&gt; Cinco respuestas cortas. Salen del lienzo de modelo de negocio. Sirven para comprobar que la solución toca algo que importa.
+
+| Pregunta | Respuesta | Origen |
+| --- | --- | --- |
+| ¿Quién compra? | | |
+| ¿Qué les vende y por qué a esta empresa? | | |
+| ¿Cómo llega a sus clientes? | | |
+| ¿Qué actividades son clave? | | |
+| ¿En qué se va el dinero? | | |
+
+## 2. Problema (obligatoria)
+
+&gt; Describe el dolor tal como lo cuenta el cliente, con cifras. Sin hablar todavía de soluciones ni de IA.
+
+- **Qué pasa:**
+- **A quién le duele:**
+- **Cuántas veces pasa (volumen y frecuencia):**
+- **Qué cuesta hoy (tiempo, dinero, clientes perdidos):**
+- **Un caso real reciente, contado por el cliente:**
+
+&gt; Ejemplo (taller mecánico inventado, no es Hidrotex): «Los clientes llaman unas 35 veces al día para preguntar cómo va su coche [E]. Cada llamada son unos 3 minutos del jefe de taller [E]. El lunes se contaron 41 llamadas [E]».
+
+## 3. Objetivo y métrica de éxito (obligatoria)
+
+&gt; Un objetivo que se pueda medir. Sin la situación de partida no se puede saber si hemos mejorado.
+
+| Métrica | Situación actual (línea base) | Objetivo | Cómo se mide | Origen |
+| --- | --- | --- | --- | --- |
+| | | | | |
+
+&gt; Ejemplo: «Llamadas de estado al día · hoy unas 35 · objetivo menos de 10 · registro de llamadas de la centralita».
+
+## 4. Personas implicadas
+
+| Papel | Quién (cargo, no nombre de alumno) | Qué necesita de la solución | Nivel técnico |
+| --- | --- | --- | --- |
+| Usa la solución a diario | | | |
+| Decide si se compra o se usa | | | |
+| Revisa los resultados | | | |
+| Se ve afectado sin usarla | | | |
+
+## 5. Proceso actual y proceso deseado
+
+&gt; Paso a paso, como una receta. En el proceso deseado, marca con **[IA]** los pasos que haría la solución y con **[P]** los que sigue haciendo una persona.
+
+**Hoy:**
+1.
+2.
+3.
+
+**Con la solución:**
+1.
+2.
+3.
+
+## 6. Alcance (obligatoria)
+
+**Dentro del alcance** (lo que sí hará esta versión):
+-
+
+**Fuera del alcance** (lo que no hará, aunque parezca relacionado):
+-
+
+&gt; El fuera de alcance es lo que más protege al proyecto: impide que el agente construya de más.
+
+## 7. Requisitos funcionales (obligatoria)
+
+&gt; Qué debe **hacer** el sistema. Uno por fila, verificable, sin decir cómo se programa.
+&gt; Prioridad (MoSCoW): **M** imprescindible · **S** debería · **C** podría · **W** esta vez no.
+
+| Id | El sistema debe… | Prioridad | Origen |
+| --- | --- | --- | --- |
+| RF-01 | | M | |
+| RF-02 | | | |
+| RF-03 | | | |
+
+&gt; Bien: «RF-01. El sistema debe marcar como duplicadas las filas de ventas idénticas a otra».
+&gt; Mal: «El sistema debe limpiar bien los datos» (no se puede comprobar) o «Usar pandas para quitar duplicados» (dice cómo, no qué).
+
+## 8. Requisitos no funcionales
+
+&gt; Cómo de bien, con qué límites. Solo los que importen en este caso, con números.
+
+| Id | Tipo | Requisito | Origen |
+| --- | --- | --- | --- |
+| RNF-01 | Coste | Coste de uso máximo de ___ € al mes | |
+| RNF-02 | Tiempo | Responde o termina en menos de ___ | |
+| RNF-03 | Usabilidad | Lo puede usar alguien sin conocimientos técnicos: ___ | |
+| RNF-04 | Privacidad | ___ (¿hay datos personales? ¿salen del equipo?) | |
+| RNF-05 | Entorno | Funciona en la máquina del aula: Ubuntu, sin GPU, 4-8 GB de RAM | Profesor |
+| RNF-06 | Idioma | Toda la salida en español | |
+
+## 9. Datos (obligatoria)
+
+### 9.1 Inventario de fuentes
+
+| Fuente | Dónde está | Formato | Quién la mantiene | Periodo | Volumen | ¿Datos personales? | Estado conocido |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| | | | | | | | |
+
+&gt; Incluye también las fuentes que el cliente mencionó pero que **no** tenemos (por ejemplo, un Excel que no nos han pasado).
+
+### 9.2 Calidad conocida
+
+&gt; Lo que ya sabemos que falla, con evidencia (fichero, línea, recuento). Lo que sospechamos pero no hemos comprobado va aparte.
+
+- Comprobado:
+- Sospechado (por comprobar):
+
+### 9.3 Datos que faltan
+
+- Qué dato haría falta, para qué y cómo se podría conseguir:
+
+## 10. Tipo de solución y justificación
+
+&gt; Reglas · ML clásico · clasificación rápida · modelo de lenguaje · RAG · agente. Di por qué esta y por qué no la alternativa más cercana.
+
+- **Propuesta:**
+- **Por qué:**
+- **Alternativa descartada y por qué:**
+
+## 11. Criterios de aceptación y ejemplos (obligatoria)
+
+### 11.1 Criterios (de 3 a 5; al menos uno de error)
+
+| Id | Dado… | Cuando… | Entonces… | Cubre |
+| --- | --- | --- | --- | --- |
+| CA-01 | | | | RF-01 |
+| CA-02 | | | | |
+| CA-03 | | | | |
+
+### 11.2 Tabla de ejemplos (de 5 a 10)
+
+&gt; Casos concretos con entrada y salida esperada. Incluye casos normales y **casos límite**. Es la base de los tests.
+
+| # | Entrada | Salida esperada | ¿Caso límite? |
+| --- | --- | --- | --- |
+| 1 | | | |
+| 2 | | | |
+| 3 | | | |
+| 4 | | | |
+| 5 | | | |
+
+**Umbral de aceptación:** ____ **Por qué ese número:** ____
+
+&gt; Partes que dan siempre el mismo resultado → test clásico: debe pasar siempre. Partes de IA, que a veces fallan → umbral («acierta al menos 45 de 50»).
+
+## 12. Riesgos y cumplimiento (obligatoria)
+
+| Pregunta | Respuesta |
+| --- | --- |
+| ¿Qué pasa si el sistema se equivoca? ¿Cuánto cuesta el error? | |
+| ¿Quién revisa el resultado antes de usarlo (humano en el bucle)? | |
+| ¿Hay datos personales? ¿Cuáles? ¿Qué base legal (RGPD)? | |
+| Nivel de riesgo según el Reglamento europeo de IA y por qué | |
+| ¿Toma decisiones sobre personas (empleados, clientes)? | |
+| ¿Qué datos salen del equipo hacia un servicio externo? | |
+
+## 13. Restricciones técnicas
+
+&gt; Casi siempre las mismas en este curso. Añade las propias del caso.
+
+- El agente construye; el trío especifica y verifica.
+- `datos/` es de solo lectura: los resultados van a `src/salida/`.
+- Python con `pandas` y la librería estándar; nada más sin preguntar.
+- Tests con `pytest`: al menos uno por criterio de aceptación.
+- Ninguna clave de API en el repositorio.
+- Propias de este caso:
+
+## 14. Supuestos y preguntas abiertas (obligatoria)
+
+| # | Lo que suponemos o no sabemos | Cómo afecta si nos equivocamos | Pregunta para el cliente | Estado |
+| --- | --- | --- | --- | --- |
+| 1 | | | | Pendiente |
+
+&gt; Esta tabla nunca está vacía al principio. Si lo está, no habéis buscado bien.
+
+## 15. Entregables y definición de «hecho»
+
+- **Qué se entrega:** (ficheros, informe, tabla…)
+- **Está hecho cuando:** todos los CA se cumplen con evidencia, los tests pasan (`bash init.sh` en verde), el verificador ha revisado los cambios y `progress/actual.md` está al día.
+
+## 16. Registro de cambios y aprobación
+
+| Versión | Fecha | Quién | Qué cambia |
+| --- | --- | --- | --- |
+| 0.1 | | | Primera versión |
+
+**Aprobación del profesor:** ☐ Aprobado ☐ Devuelto — Motivo:
+
+---
+
+## Instrucciones para el agente (modo Plan)
+
+Cuando te pidan planificar a partir de este documento:
+
+1. **No escribas código ni modifiques ficheros.** Solo propones un plan.
+2. Si el estado no es **APROBADO**, tu única tarea es revisar el documento: di qué secciones obligatorias están vacías, qué requisitos no se pueden verificar y qué contradicciones ves.
+3. Si falta un dato que el plan necesita, **no lo supongas**: añádelo como pregunta en tu respuesta, citando la sección 14.
+4. El plan debe incluir, en este orden:
+   - los pasos de construcción, cada uno ligado a los RF que cubre;
+   - los ficheros que crearás en `src/` y `tests/`;
+   - qué test comprueba cada CA y qué ejemplo de la tabla 11.2 usa;
+   - los riesgos de la sección 12 que afectan al diseño;
+   - lo que queda fuera por la sección 6.
+5. Respeta las restricciones de la sección 13 y las reglas de `AGENTS.md`.
+6. Termina con una lista de dudas para el trío. Si no tienes ninguna, dilo expresamente.
+</pre></div>
+          <p><b>Ficha de especificación</b></p>
+          <div class="cmd"><button class="copy" type="button">Copiar</button><pre>FICHA DE ESPECIFICACIÓN: [título corto]
+Estado: BORRADOR   (el profesor la cambia a APROBADA)
+
+1. Historia de usuario
+Como [quién], quiero [qué], para [beneficio].
+
+2. Criterios de aceptación (3 a 5; al menos uno de error)
+- Dado ..., cuando ..., entonces ...
+- Dado ..., cuando ..., entonces ...
+- Dado ..., cuando ..., entonces ...
+
+3. Tabla de ejemplos (5 a 10)
+| # | Entrada | Salida esperada |
+| 1 |  |  |
+Umbral de aceptación: ____   Por qué ese número: ____
+
+4. Fuera de alcance
+- </pre></div>
+        </div>
+      </section>
+    </main>
+  </div>
+  </div><!-- /kit -->
+
+  <footer>IES Donoso Cortés · Inteligencia Artificial Aplicada a la Empresa · Curso 2026-2027. Hidrotex es una empresa ficticia creada para el curso.</footer>
+</div>
+
+<script>
+(function(){
+  var KEY='cuaderno-progreso', TABKEY='cuaderno-pestana';
+  var state={};
+  try{ state=JSON.parse(localStorage.getItem(KEY)||localStorage.getItem('sesion0-progreso')||'{}')||{}; }catch(e){ state={}; }
+  var panels=[].slice.call(document.querySelectorAll('.panel'));
+  var tabs=[].slice.call(document.querySelectorAll('.tab'));
+  function show(id, remember){
+    panels.forEach(function(p){ p.hidden = p.id!==id; });
+    tabs.forEach(function(t){ t.setAttribute('aria-selected', t.dataset.panel===id ? 'true':'false'); });
+    if(remember){ try{ localStorage.setItem(TABKEY,id); }catch(e){} }
+  }
+  tabs.forEach(function(t){ t.addEventListener('click',function(){ show(t.dataset.panel,true); window.scrollTo(0,0); }); });
+  var start='viernes', h=(location.hash||'').slice(1);
+  var target=h && document.getElementById(h);
+  if(target){ var p=target.closest('.panel'); if(p) start=p.id; }
+  else { try{ var saved=localStorage.getItem(TABKEY); if(saved && document.getElementById(saved)) start=saved; }catch(e){} }
+  show(start,false);
+  if(target && target.scrollIntoView) target.scrollIntoView();
+
+  function render(){
+    panels.forEach(function(p){
+      var boxes=[].slice.call(p.querySelectorAll('input[type=checkbox][data-step]')), n=0;
+      boxes.forEach(function(b){
+        var on=!!state[b.dataset.step]; b.checked=on; if(on) n++;
+        var link=p.querySelector('nav.steps a[data-step="'+b.dataset.step+'"]');
+        if(link) link.classList.toggle('done',on);
+      });
+      var t=p.querySelector('.prog-text'), bar=p.querySelector('.prog-bar');
+      if(t) t.textContent=n+' de '+boxes.length+' hechos';
+      if(bar) bar.style.width=(boxes.length? 100*n/boxes.length : 0)+'%';
+    });
+  }
+  document.querySelectorAll('input[type=checkbox][data-step]').forEach(function(b){
+    b.addEventListener('change',function(){
+      state[b.dataset.step]=b.checked;
+      try{ localStorage.setItem(KEY,JSON.stringify(state)); }catch(e){}
+      render();
+    });
+  });
+  render();
+
+  document.querySelectorAll('.cmd').forEach(function(box){
+    var btn=box.querySelector('.copy'), pre=box.querySelector('pre');
+    btn.addEventListener('click',function(){
+      var clone=pre.cloneNode(true);
+      clone.querySelectorAll('.c').forEach(function(c){ c.remove(); });
+      var text=clone.textContent.replace(/[ \t]+$/gm,'');
+      function ok(){ btn.textContent='Copiado'; setTimeout(function(){btn.textContent='Copiar';},1500); }
+      function fallback(){
+        var r=document.createRange(); r.selectNodeContents(pre);
+        var s=window.getSelection(); s.removeAllRanges(); s.addRange(r);
+        btn.textContent='Pulsa Ctrl+C';
+      }
+      try{
+        if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(ok,fallback); }
+        else { fallback(); }
+      }catch(e){ fallback(); }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
